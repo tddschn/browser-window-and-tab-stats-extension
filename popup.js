@@ -1,45 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
-  chrome.windows.getCurrent({ populate: true }, (currentWindow) => {
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.windows.getCurrent({ populate: true }, currentWindow => {
     chrome.windows.getAll({ populate: true }, (windows) => {
-      const windowListElement = document.getElementById("windowList");
-      const totalCountsElement = document.getElementById("totalCounts");
+      const windowListElement = document.getElementById('windowList');
+      const totalCountsElement = document.getElementById('totalCounts');
       let totalTabs = 0;
+      let totalWindows = 0;
 
-      // Clear the loading message
-      windowListElement.innerHTML = "";
-      totalCountsElement.innerHTML = "";
+      windowListElement.innerHTML = '';
+      totalCountsElement.innerHTML = '';
 
-      // Calculate total number of windows and tabs
-      const totalWindows = windows.length;
-      windows.forEach((win) => (totalTabs += win.tabs.length));
+      windows.forEach(win => {
+        totalTabs += win.tabs.length;
+        totalWindows++;
 
-      // Display total counts
-      totalCountsElement.textContent = `Windows: ${totalWindows} | Tabs: ${totalTabs}`;
+        const activeTab = win.tabs.find(tab => tab.active);
+        const windowName = activeTab ? activeTab.title : `Window ${win.id}`;
 
-      // Iterate over the windows to display their details
-      windows.forEach((win) => {
-        const div = document.createElement("div");
-        div.className = "windowItem";
-        div.textContent = `${win.title}: ${win.tabs.length} tabs`;
-
-        // Highlight the current window
-        if (win.id === currentWindow.id) {
-          div.classList.add("current");
-        }
-
-        // Create a span for the window name to make it bold
-        const span = document.createElement("span");
-        span.className = "windowName";
-        // span.textContent = win.title.split(' - ')[0] || `Window ${win.id}`;
-        span.textContent = win.title
-          ? win.title.split(" - ")[0]
-          : `Window ${win.id}`;
-        div.textContent = ""; // Clear the textContent before appending the child elements
-        div.appendChild(span);
-        div.appendChild(document.createTextNode(`: ${win.tabs.length} tabs`));
-
+        const div = document.createElement('div');
+        div.className = `windowItem ${win.id === currentWindow.id ? 'current' : ''}`;
+        div.innerHTML = `<span class='windowName'>${windowName}</span>: ${win.tabs.length} tabs`;
         windowListElement.appendChild(div);
       });
+
+      totalCountsElement.textContent = `Windows: ${totalWindows} | Tabs: ${totalTabs}`;
     });
   });
 });
