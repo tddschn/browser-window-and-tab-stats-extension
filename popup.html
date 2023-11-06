@@ -9,25 +9,37 @@
       padding: 10px;
       width: 300px;
     }
-    .windowItem {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .windowName {
-      font-weight: bold;
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
     }
     .current {
       background-color: #e8f0fe;
     }
-    #totalCounts {
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 <body>
-  <div id="totalCounts"></div>
-  <div id="windowList">Loading...</div>
+  <table id="statsTable">
+    <tr>
+      <th>Total Windows</th>
+      <th>Total Tabs</th>
+    </tr>
+    <tr>
+      <td id="totalWindows"></td>
+      <td id="totalTabs"></td>
+    </tr>
+  </table>
+  <table id="windowList">
+    <!-- Window items will be loaded here -->
+  </table>
   <script src="popup.js"></script>
 </body>
 </html>
