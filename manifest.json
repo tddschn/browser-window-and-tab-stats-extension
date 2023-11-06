@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Window Tab Counter",
+  "name": "Window & Tab Stats",
   "version": "1.0",
   "permissions": ["tabs", "windows"],
   "action": {
