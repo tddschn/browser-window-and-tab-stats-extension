@@ -1,0 +1,8 @@
+.gptignore
+output.txt
+**/*.png
+*.png
+package*.json
+savedFileNamesToJSON.js
+test-input
+node_modules/*
