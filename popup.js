@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // Clear the existing table contents except for the header
       windowListElement.innerHTML = '';
 
-      windows.forEach(win => {
+      // Sort windows by tab count in descending order
+      const sortedWindows = windows.sort((a, b) => b.tabs.length - a.tabs.length);
+
+      sortedWindows.forEach(win => {
         totalTabs += win.tabs.length;
         totalWindows++;
 
