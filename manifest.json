@@ -6,12 +6,13 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "48": "icon/icon-48x48.png",
+      // "48": "icon/icon-48x48.png",
+      "500": "icon/icon.png",
       "128": "icon/icon-128x128.png"
     }
   },
   "icons": {
-    "48": "icon/icon-48x48.png",
+    // "48": "icon/icon-48x48.png",
     "128": "icon/icon-128x128.png"
   },
   "background": {
