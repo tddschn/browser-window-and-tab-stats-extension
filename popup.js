@@ -1,28 +1,32 @@
-document.addEventListener('DOMContentLoaded', () => {
-  chrome.windows.getCurrent({ populate: true }, currentWindow => {
+document.addEventListener("DOMContentLoaded", () => {
+  chrome.windows.getCurrent({ populate: true }, (currentWindow) => {
     chrome.windows.getAll({ populate: true }, (windows) => {
-      const windowListElement = document.getElementById('windowList');
-      const totalWindowsElement = document.getElementById('totalWindows');
-      const totalTabsElement = document.getElementById('totalTabs');
+      const windowListElement = document.getElementById("windowList");
+      const totalWindowsElement = document.getElementById("totalWindows");
+      const totalTabsElement = document.getElementById("totalTabs");
       let totalTabs = 0;
       let totalWindows = 0;
 
       // Clear the existing contents of windowList
-      windowListElement.innerHTML = '';
+      windowListElement.innerHTML = "";
 
       // Sort windows by tab count in descending order
-      const sortedWindows = windows.sort((a, b) => b.tabs.length - a.tabs.length);
+      const sortedWindows = windows.sort(
+        (a, b) => b.tabs.length - a.tabs.length
+      );
 
-      sortedWindows.forEach(win => {
+      sortedWindows.forEach((win) => {
         totalTabs += win.tabs.length;
         totalWindows++;
 
-        const activeTab = win.tabs.find(tab => tab.active);
+        const activeTab = win.tabs.find((tab) => tab.active);
         const windowName = activeTab ? activeTab.title : `Window ${win.id}`;
 
         // Create a new row for each window
-        const tr = document.createElement('tr');
-        tr.className = `windowItem ${win.id === currentWindow.id ? 'current' : ''}`;
+        const tr = document.createElement("tr");
+        tr.className = `windowItem ${
+          win.id === currentWindow.id ? "current" : ""
+        }`;
         tr.innerHTML = `
           <td class='windowName'>${windowName}</td>
           <td>${win.tabs.length} tabs</td>
@@ -36,37 +40,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-// ... existing code ...
-
-// Function to update the UI with tab group information
 function updateTabGroups() {
   chrome.tabGroups.query({}, (groups) => {
-    const tabGroupsElement = document.getElementById('tabGroupsList');
-    let totalGroups = 0;
+    const tabGroupsElement = document.getElementById("tabGroupsList");
 
     // Clear existing contents
-    tabGroupsElement.innerHTML = '';
+    tabGroupsElement.innerHTML = "";
 
-    // Sort groups by tab count in descending order
-    const sortedGroups = groups.sort((a, b) => b.tabCount - a.tabCount);
-
-    sortedGroups.forEach(group => {
-      totalGroups++;
-
-      // Create a new row for each tab group
-      const tr = document.createElement('tr');
-      tr.className = 'tabGroupItem';
-      tr.innerHTML = `
-        <td class='groupName'>${group.title}</td>
-        <td>${group.tabCount} tabs</td>
-      `;
-      tabGroupsElement.appendChild(tr);
+    // Loop over each group to find tabs within it
+    groups.forEach((group) => {
+      chrome.tabs.query({ groupId: group.id }, (tabsInGroup) => {
+        // Create a new row for each tab group
+        const tr = document.createElement("tr");
+        tr.className = "tabGroupItem";
+        tr.innerHTML = `
+          <td class='groupName'>${group.title || "Group " + group.id}</td>
+          <td>${tabsInGroup.length} tabs</td> 
+        `;
+        tabGroupsElement.appendChild(tr);
+      });
     });
   });
 }
 
-// Call the new function within the DOMContentLoaded listener
-document.addEventListener('DOMContentLoaded', () => {
-  // ... existing code ...
-  updateTabGroups(); // Add this line to update tab groups
+// Make sure to call this function when the popup is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  updateTabGroups(); // This will populate the tab groups when the popup is displayed
 });
