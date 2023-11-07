@@ -32,12 +32,15 @@
   </head>
   <body>
     <table id="statsTable">
-      <tr>
-        <th colspan="2">Total Windows: <span id="totalWindows"></span></th>
-        <th colspan="2">Total Tabs: <span id="totalTabs"></span></th>
-      </tr>
-      <!-- Window items will be loaded here -->
-      <tr id="windowList"></tr>
+      <thead>
+        <tr>
+          <th>Total Windows: <span id="totalWindows"></span></th>
+          <th>Total Tabs: <span id="totalTabs"></span></th>
+        </tr>
+      </thead>
+      <tbody id="windowList">
+        <!-- Window items will be loaded here -->
+      </tbody>
     </table>
     <script src="popup.js"></script>
   </body>

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let totalTabs = 0;
       let totalWindows = 0;
 
-      // Clear the existing table contents except for the header
+      // Clear the existing contents of windowList
       windowListElement.innerHTML = '';
 
       // Sort windows by tab count in descending order
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         windowListElement.appendChild(tr);
       });
 
-      // Set the total counts in the table header
+      // Set the total counts in the totalWindows and totalTabs elements
       totalWindowsElement.textContent = totalWindows;
       totalTabsElement.textContent = totalTabs;
     });
