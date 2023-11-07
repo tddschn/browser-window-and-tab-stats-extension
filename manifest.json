@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Window & Tab Stats",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "permissions": ["tabs", "windows", "tabGroups"],
   "action": {
     "default_popup": "popup.html",
