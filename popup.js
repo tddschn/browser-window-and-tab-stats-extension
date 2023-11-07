@@ -36,3 +36,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+// ... existing code ...
+
+// Function to update the UI with tab group information
+function updateTabGroups() {
+  chrome.tabGroups.query({}, (groups) => {
+    const tabGroupsElement = document.getElementById('tabGroupsList');
+    let totalGroups = 0;
+
+    // Clear existing contents
+    tabGroupsElement.innerHTML = '';
+
+    // Sort groups by tab count in descending order
+    const sortedGroups = groups.sort((a, b) => b.tabCount - a.tabCount);
+
+    sortedGroups.forEach(group => {
+      totalGroups++;
+
+      // Create a new row for each tab group
+      const tr = document.createElement('tr');
+      tr.className = 'tabGroupItem';
+      tr.innerHTML = `
+        <td class='groupName'>${group.title}</td>
+        <td>${group.tabCount} tabs</td>
+      `;
+      tabGroupsElement.appendChild(tr);
+    });
+  });
+}
+
+// Call the new function within the DOMContentLoaded listener
+document.addEventListener('DOMContentLoaded', () => {
+  // ... existing code ...
+  updateTabGroups(); // Add this line to update tab groups
+});
