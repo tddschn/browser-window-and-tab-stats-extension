@@ -1,44 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Window Tab Counter</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 10px;
-        width: 300px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 16px; /* Increased font size */
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-        font-size: 16px; /* Increased font size */
-      }
-      th {
-        background-color: #f2f2f2;
-        font-size: 18px; /* Even larger font size for headers */
-      }
-      .current {
-        background-color: #e8f0fe;
-      }
-    </style>
-  </head>
-  <body>
-    <table id="statsTable">
+<head>
+  <title>Window Tab Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      width: 300px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px; /* Increased font size */
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      font-size: 16px; /* Increased font size */
+    }
+    th {
+      background-color: #f2f2f2;
+      font-size: 18px; /* Even larger font size for headers */
+    }
+    .current {
+      background-color: #e8f0fe;
+    }
+  </style>
+</head>
+<body>
+  <table id="statsTable">
+    <thead>
       <tr>
-        <th colspan="2">Total Windows: <span id="totalWindows"></span></th>
-        <th colspan="2">Total Tabs: <span id="totalTabs"></span></th>
+        <th colspan="2">Total Windows</th>
+        <th id="totalWindows" colspan="2"></th>
+        <th colspan="2">Total Tabs</th>
+        <th id="totalTabs" colspan="2"></th>
       </tr>
-      <!-- Window items will be loaded here -->
-      <tr id="windowList"></tr>
-    </table>
-    <script src="popup.js"></script>
-  </body>
+    </thead>
+    <tbody id="windowList">
+      <!-- Window items will be dynamically inserted here -->
+    </tbody>
+  </table>
+  <script src="popup.js"></script>
+</body>
 </html>
