@@ -1,5 +1,7 @@
 # Window & Tab Stats Chrome Extension
 
+![Extension Icon](icon/icon-128x128.png)
+
 Window & Tab Stats is a handy Chrome extension that helps you manage your browsing more efficiently by keeping track of the number of open windows and tabs, as well as organizing them into tab groups for better accessibility.
 
 ## Features
@@ -28,11 +30,7 @@ Here are a couple of screenshots showing what the Window & Tab Stats extension l
 ![Screenshot 1](screenshots/screenshot-1.png)
 ![Screenshot 2](screenshots/screenshot-2.png)
 
-## Icon
 
-Here is the icon for the Window & Tab Stats Chrome Extension:
-
-![Extension Icon](icon/icon.png)
 
 ## Support
 
