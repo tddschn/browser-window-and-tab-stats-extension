@@ -49,10 +49,13 @@ def main():
                     f"{icon_file_path.stem}-{size}x{size}{icon_file_path.suffix}"
                 )
                 icon_file_path_output = icon_file_path.parent / icon_file_name
-                command = f"convert -resize {size}x{size} {quote(str(icon_file_path))} {quote(str(icon_file_path_output))}"
+                # command = f"convert -resize {size}x{size} {quote(str(icon_file_path))} {quote(str(icon_file_path_output))}"
+                # distort
+                command = f"convert -resize {size}x{size}! {quote(str(icon_file_path))} {quote(str(icon_file_path_output))}"
 
                 # Execute the convert command
                 try:
+                    print(f'Running command "{command}"')
                     subprocess.run(command, check=True, shell=True)
                     print(f"Created icon {icon_file_path_output}")
                 except subprocess.CalledProcessError as e:
