@@ -43,19 +43,29 @@ document.addEventListener("DOMContentLoaded", () => {
 function updateTabGroups() {
   chrome.tabGroups.query({}, (groups) => {
     const tabGroupsElement = document.getElementById("tabGroupsList");
+    tabGroupsElement.innerHTML = ""; // Clear existing contents
 
-    // Clear existing contents
-    tabGroupsElement.innerHTML = "";
+    // Map each group to a promise that resolves with the group and its tab count
+    let groupPromises = groups.map((group) => {
+      return new Promise((resolve) => {
+        chrome.tabs.query({ groupId: group.id }, (tabsInGroup) => {
+          resolve({ group: group, tabCount: tabsInGroup.length });
+        });
+      });
+    });
 
-    // Loop over each group to find tabs within it
-    groups.forEach((group) => {
-      chrome.tabs.query({ groupId: group.id }, (tabsInGroup) => {
-        // Create a new row for each tab group
+    // Wait for all promises to resolve
+    Promise.all(groupPromises).then((groupsInfo) => {
+      // Sort groups by tab count in descending order
+      groupsInfo.sort((a, b) => b.tabCount - a.tabCount);
+
+      // Add sorted groups to the UI
+      groupsInfo.forEach(({ group, tabCount }) => {
         const tr = document.createElement("tr");
         tr.className = "tabGroupItem";
         tr.innerHTML = `
           <td class='groupName'>${group.title || "Group " + group.id}</td>
-          <td>${tabsInGroup.length} tabs</td> 
+          <td>${tabCount} tabs</td>
         `;
         tabGroupsElement.appendChild(tr);
       });
@@ -63,7 +73,5 @@ function updateTabGroups() {
   });
 }
 
-// Make sure to call this function when the popup is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  updateTabGroups(); // This will populate the tab groups when the popup is displayed
-});
+// Call the update function when the DOM is loaded
+document.addEventListener("DOMContentLoaded", updateTabGroups);
