@@ -10,6 +10,46 @@ import subprocess
 from pathlib import Path
 from shlex import quote
 
+import struct
+import imghdr
+
+
+# https://stackoverflow.com/questions/8032642/how-can-i-obtain-the-image-size-using-a-standard-python-class-without-using-an
+def get_image_size(fname):
+    """Determine the image type of fhandle and return its size.
+    from draco"""
+    with open(fname, "rb") as fhandle:
+        head = fhandle.read(24)
+        if len(head) != 24:
+            return
+        if imghdr.what(fname) == "png":
+            check = struct.unpack(">i", head[4:8])[0]
+            if check != 0x0D0A1A0A:
+                return
+            width, height = struct.unpack(">ii", head[16:24])
+        elif imghdr.what(fname) == "gif":
+            width, height = struct.unpack("<HH", head[6:10])
+        elif imghdr.what(fname) == "jpeg":
+            try:
+                fhandle.seek(0)  # Read 0xff next
+                size = 2
+                ftype = 0
+                while not 0xC0 <= ftype <= 0xCF:
+                    fhandle.seek(size, 1)
+                    byte = fhandle.read(1)
+                    while ord(byte) == 0xFF:
+                        byte = fhandle.read(1)
+                    ftype = ord(byte)
+                    size = struct.unpack(">H", fhandle.read(2))[0] - 2
+                # We are at a SOFn block
+                fhandle.seek(1, 1)  # Skip `precision' byte.
+                height, width = struct.unpack(">HH", fhandle.read(4))
+            except Exception:  # IGNORE:W0703
+                return
+        else:
+            return
+        return width, height
+
 
 def get_args():
     """Get command-line arguments"""
@@ -80,6 +120,15 @@ def main():
             args.icons_from and file_path.name == args.icons_from
         ):
             continue
+
+        # Get the size of the current image
+        image_size = get_image_size(file_path)
+
+        # Check if the image dimensions are larger than 1280x800 and set the target resolution accordingly
+        if image_size and image_size[0] > 1280 and image_size[1] > 800:
+            target_resolution = "1280x800"
+        else:
+            target_resolution = "640x400"
 
         # Generate the new filename with the target resolution
         new_file_name = f"{file_path.stem}-{target_resolution}{file_path.suffix}"
